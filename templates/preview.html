@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download File - ZapTunnel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            background: #f7f7f7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .file-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            word-break: break-all;
+            margin-bottom: 8px;
+        }
+
+        .file-size {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .password-section {
+            margin: 20px 0;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📎</div>
+        <h1>File Ready to Download</h1>
+
+        <div class="file-info">
+            <div class="file-name" id="fileName">{{FILE_NAME}}</div>
+            <div class="file-size" id="fileSize">{{FILE_SIZE}}</div>
+        </div>
+
+        {{#if PASSWORD_PROTECTED}}
+        <div class="password-section">
+            <input
+                type="password"
+                id="passwordInput"
+                class="password-input"
+                placeholder="Enter password to download"
+                onkeypress="handleKeyPress(event)"
+            >
+        </div>
+        {{/if}}
+
+        <button class="download-btn" onclick="downloadFile()">
+            Download File
+        </button>
+
+        <div class="error" id="errorMsg"></div>
+
+        <div class="footer">
+            Powered by <a href="https://github.com" target="_blank">ZapTunnel</a>
+        </div>
+    </div>
+
+    <script>
+        const passwordProtected = {{PASSWORD_PROTECTED}};
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                downloadFile();
+            }
+        }
+
+        async function downloadFile() {
+            const btn = document.querySelector('.download-btn');
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.textContent = '';
+
+            let url = '/download';
+
+            if (passwordProtected) {
+                const password = document.getElementById('passwordInput').value;
+                if (!password) {
+                    errorMsg.textContent = 'Please enter a password';
+                    return;
+                }
+                url += `?password=${encodeURIComponent(password)}`;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Starting download...';
+
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(error || 'Download failed');
+                }
+
+                // Get filename from Content-Disposition header
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = 'download';
+                if (contentDisposition) {
+                    const matches = /filename="?([^"]+)"?/.exec(contentDisposition);
+                    if (matches && matches[1]) {
+                        filename = matches[1];
+                    }
+                }
+
+                // Download the file
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(downloadUrl);
+                document.body.removeChild(a);
+
+                btn.textContent = 'Download Complete!';
+            } catch (error) {
+                errorMsg.textContent = error.message;
+                btn.disabled = false;
+                btn.textContent = 'Download File';
+            }
+        }
+    </script>
+</body>
+</html>
