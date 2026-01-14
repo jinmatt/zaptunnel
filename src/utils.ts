@@ -64,6 +64,9 @@ export function sleep(ms: number): Promise<void> {
  */
 export function parseExpiration(expire: string | number): number {
   if (typeof expire === 'number') {
+    if (isNaN(expire) || expire <= 0) {
+      throw new Error('Invalid expiration time');
+    }
     return expire;
   }
 

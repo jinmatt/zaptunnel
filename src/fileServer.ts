@@ -202,6 +202,7 @@ export class FileServerOrchestrator {
 
     if (this.expirationTimer) {
       clearTimeout(this.expirationTimer);
+      this.expirationTimer = null;
     }
 
     if (this.tunnel) {
