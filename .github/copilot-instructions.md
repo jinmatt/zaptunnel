@@ -51,10 +51,7 @@ node dist/cli.js share <file>   # Direct execution
 ```
 
 ### Testing
-Currently, this project does not have automated tests. Manual testing should be done by:
-1. Building the project with `npm run build`
-2. Running the CLI with `npm start share <test-file>`
-3. Verifying file sharing functionality works end-to-end
+Currently, this project does not have automated tests. For manual testing, see the "Common Tasks" section below.
 
 ## Code Style and Conventions
 
@@ -124,9 +121,22 @@ Currently, this project does not have automated tests. Manual testing should be 
 - All Cloudflare tunnel logic is in `src/tunnel.ts`
 - Tunnel process management must ensure cleanup on shutdown
 
+## Manual Testing
+
+Since this project does not have automated tests yet, manual testing should be done by:
+1. Building the project: `npm run build`
+2. Running the CLI tool: `npm start share <test-file>` or `node dist/cli.js share <test-file>`
+3. Verifying the file sharing functionality works end-to-end:
+   - Check that the server starts
+   - Verify the Cloudflare tunnel URL is generated
+   - Test the download works through the URL
+   - Confirm password protection works (if enabled)
+   - Verify auto-shutdown works after max downloads or expiration
+
+When adding tests, use a testing framework consistent with TypeScript (e.g., Jest, Mocha).
+
 ## Important Notes
 
 - **Do not edit files in `dist/`** - They are auto-generated
 - **Cloudflared dependency** - The tool requires cloudflared to be installed separately
-- **No tests yet** - When adding tests, use a testing framework consistent with TypeScript (e.g., Jest, Mocha)
 - **MIT License** - Contributions must be compatible with MIT license
