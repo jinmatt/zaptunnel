@@ -1,0 +1,43 @@
+# GitHub Copilot Setup Steps
+# This file configures the environment for GitHub Copilot coding agent
+
+name: "ZapTunnel Development Environment"
+description: "Setup steps for developing and testing ZapTunnel CLI tool"
+
+steps:
+  - name: "Install Node.js dependencies"
+    run: "npm install"
+    description: "Install all npm packages including TypeScript, Express, Commander, and other dependencies"
+  
+  - name: "Build TypeScript"
+    run: "npm run build"
+    description: "Compile TypeScript source files to JavaScript in dist/ directory"
+
+# Note: Cloudflared is an external system dependency that must be installed separately
+# For full end-to-end testing, cloudflared must be available in PATH
+# However, for code changes, linting, and building, only Node.js and npm are required
+
+tools:
+  - name: "Node.js"
+    version: ">=18.0.0"
+    description: "JavaScript runtime required for the project"
+  
+  - name: "npm"
+    description: "Package manager for installing dependencies"
+  
+  - name: "TypeScript"
+    description: "Installed via npm as dev dependency, used for compilation"
+
+optional_tools:
+  - name: "cloudflared"
+    description: "Cloudflare tunnel client - required for runtime but not for development/building"
+    installation: "See README.md for platform-specific installation instructions"
+
+environment:
+  NODE_ENV: "development"
+
+notes: |
+  - The dist/ directory is auto-generated and should not be edited directly
+  - Build artifacts in dist/ are excluded from git via .gitignore
+  - No test suite exists yet, so automated testing is not configured
+  - For manual testing, cloudflared must be installed and available in PATH
