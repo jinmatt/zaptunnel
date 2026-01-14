@@ -1,5 +1,8 @@
 # ZapTunnel ⚡
 
+[![CI](https://github.com/jinmatt/zaptunnel/actions/workflows/ci.yml/badge.svg)](https://github.com/jinmatt/zaptunnel/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/jinmatt/zaptunnel/branch/main/graph/badge.svg)](https://codecov.io/gh/jinmatt/zaptunnel)
+
 A CLI tool that instantly shares files by generating temporary public URLs using Cloudflare Tunnel.
 
 ## Features
@@ -13,7 +16,7 @@ A CLI tool that instantly shares files by generating temporary public URLs using
 
 ## Prerequisites
 
-- Node.js 18 or higher
+- Node.js 22 or higher
 - [Cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) installed and available in PATH
 
 ### Installing Cloudflared
