@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import ora from 'ora';
 import cliProgress from 'cli-progress';
+import qrcode from 'qrcode-terminal';
 import { FileServer } from './server';
 import { CloudflareTunnel } from './tunnel';
 import { validateFile, getFileInfo, formatBytes } from './utils';
@@ -64,6 +65,11 @@ export class FileServerOrchestrator {
       console.log('');
       console.log(chalk.bold('📎 ' + tunnelUrl));
       console.log('');
+      
+      // Display QR code
+      console.log(chalk.bold('📱 QR Code:'));
+      qrcode.generate(tunnelUrl, { small: true });
+      
       console.log(
         chalk.gray(
           `⚙️  Max downloads: ${maxDownloads} | Expires: ${expireMinutes}min${
