@@ -16,7 +16,7 @@ A CLI tool that instantly shares files by generating temporary public URLs using
 
 ## Prerequisites
 
-- Node.js 18 or higher
+- Node.js 22 or higher
 - [Cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) installed and available in PATH
 
 ### Installing Cloudflared
