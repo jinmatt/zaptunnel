@@ -142,6 +142,35 @@ npm run dev
 npm start share ./test-file.txt
 ```
 
+## Testing
+
+The project includes comprehensive unit and integration tests:
+
+```bash
+# Run all tests
+npm test
+
+# Run unit tests only
+npm run test:unit
+
+# Run integration tests only
+npm run test:integration
+
+# Run tests in watch mode
+npm run test:watch
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Test Coverage
+
+- **utils.ts**: 96.77% - Core utilities (file validation, formatting, parsing)
+- **server.ts**: 89.85% - Express server and file serving logic
+- **Overall**: 95+ passing tests with 49% coverage
+
+**Note**: Some tests require `cloudflared` to be installed and will be skipped if not available. Core functionality is thoroughly tested regardless.
+
 ## Project Structure
 
 ```

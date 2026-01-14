@@ -1,0 +1,3 @@
+This is a small test file for ZapTunnel testing.
+It contains just a few lines of text to test basic file sharing functionality.
+Line 3 of the test file.
