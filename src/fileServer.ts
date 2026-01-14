@@ -68,23 +68,23 @@ export class FileServerOrchestrator {
       
       // Display QR code with left margin for easier scanning
       console.log(chalk.bold('📱 QR Code:'));
-      qrcode.generate(tunnelUrl, { small: true }, (qrcode) => {
+      qrcode.generate(tunnelUrl, { small: true }, (qrcodeString) => {
         // Add left margin (4 spaces) to each line for better scanning
-        const lines = qrcode.split('\n');
+        const lines = qrcodeString.split('\n');
         const margin = '    ';
         const qrcodeWithMargin = lines.map(line => margin + line).join('\n');
         console.log(qrcodeWithMargin);
+        
+        console.log(
+          chalk.gray(
+            `⚙️  Max downloads: ${maxDownloads} | Expires: ${expireMinutes}min${
+              options.password ? ' | Password protected' : ''
+            }`
+          )
+        );
+        console.log('');
+        console.log(chalk.yellow('⏳ Waiting for download...'));
       });
-      
-      console.log(
-        chalk.gray(
-          `⚙️  Max downloads: ${maxDownloads} | Expires: ${expireMinutes}min${
-            options.password ? ' | Password protected' : ''
-          }`
-        )
-      );
-      console.log('');
-      console.log(chalk.yellow('⏳ Waiting for download...'));
 
       // Setup expiration timer
       this.setupExpirationTimer(expireMinutes);
