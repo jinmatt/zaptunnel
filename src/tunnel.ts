@@ -28,21 +28,25 @@ export class CloudflareTunnel extends EventEmitter {
 
         let stderr = '';
 
-        // Parse stdout for tunnel URL
-        this.process.stdout?.on('data', (data: Buffer) => {
-          const output = data.toString();
-
+        const parseForUrl = (output: string) => {
           // Look for the tunnel URL in the output
           const urlMatch = output.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
           if (urlMatch && !this.tunnelUrl) {
             this.tunnelUrl = urlMatch[0];
             resolve(this.tunnelUrl);
           }
+        };
+
+        // Parse stdout for tunnel URL
+        this.process.stdout?.on('data', (data: Buffer) => {
+          parseForUrl(data.toString());
         });
 
-        // Capture stderr for error messages
+        // Parse stderr for tunnel URL (cloudflared outputs URL here)
         this.process.stderr?.on('data', (data: Buffer) => {
-          stderr += data.toString();
+          const output = data.toString();
+          stderr += output;
+          parseForUrl(output);
         });
 
         // Handle process errors
