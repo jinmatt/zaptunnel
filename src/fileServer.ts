@@ -69,6 +69,7 @@ export class FileServerOrchestrator {
       // Display QR code with left margin for easier scanning
       console.log(chalk.bold('📱 QR Code:'));
       try {
+        // Note: qrcode.generate callback executes synchronously
         qrcode.generate(tunnelUrl, { small: true }, (qrcodeString) => {
           // Add left margin (4 spaces) to each line for better scanning
           const lines = qrcodeString.split('\n');
