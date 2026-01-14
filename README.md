@@ -116,6 +116,7 @@ zaptunnel share ./file.tar.gz -m 5 -e 120 -p secretpass
 ⚙️  Max downloads: 1 | Expires: 60min
 
 ⏳ Waiting for download...
+   Press Ctrl+C to shutdown
 
 📥 Download started...
 ████████████████████░░ 80% | 1.9 MB/2.4 MB

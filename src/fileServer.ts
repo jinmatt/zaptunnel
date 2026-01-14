@@ -90,6 +90,7 @@ export class FileServerOrchestrator {
       );
       console.log('');
       console.log(chalk.yellow('⏳ Waiting for download...'));
+      console.log(chalk.gray('   Press Ctrl+C to shutdown'));
 
       // Setup expiration timer
       this.setupExpirationTimer(expireMinutes);
@@ -162,6 +163,7 @@ export class FileServerOrchestrator {
       } else {
         console.log('');
         console.log(chalk.yellow('⏳ Waiting for next download...'));
+        console.log(chalk.gray('   Press Ctrl+C to shutdown'));
       }
     });
 
