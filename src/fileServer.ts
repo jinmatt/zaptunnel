@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import ora from 'ora';
 import cliProgress from 'cli-progress';
+import qrcode from 'qrcode-terminal';
 import { FileServer } from './server';
 import { CloudflareTunnel } from './tunnel';
 import { validateFile, getFileInfo, formatBytes } from './utils';
@@ -64,6 +65,22 @@ export class FileServerOrchestrator {
       console.log('');
       console.log(chalk.bold('📎 ' + tunnelUrl));
       console.log('');
+      
+      // Display QR code with left margin for easier scanning
+      console.log(chalk.bold('📱 QR Code:'));
+      try {
+        // Note: qrcode.generate callback executes synchronously
+        qrcode.generate(tunnelUrl, { small: true }, (qrcodeString) => {
+          // Add left margin (4 spaces) to each line for better scanning
+          const lines = qrcodeString.split('\n');
+          const margin = '    ';
+          const qrcodeWithMargin = lines.map(line => margin + line).join('\n');
+          console.log(qrcodeWithMargin);
+        });
+      } catch (error) {
+        console.log(chalk.yellow('  (QR code generation failed)'));
+      }
+      
       console.log(
         chalk.gray(
           `⚙️  Max downloads: ${maxDownloads} | Expires: ${expireMinutes}min${
