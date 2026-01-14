@@ -66,9 +66,15 @@ export class FileServerOrchestrator {
       console.log(chalk.bold('📎 ' + tunnelUrl));
       console.log('');
       
-      // Display QR code
+      // Display QR code with left margin for easier scanning
       console.log(chalk.bold('📱 QR Code:'));
-      qrcode.generate(tunnelUrl, { small: true });
+      qrcode.generate(tunnelUrl, { small: true }, (qrcode) => {
+        // Add left margin (4 spaces) to each line for better scanning
+        const lines = qrcode.split('\n');
+        const margin = '    ';
+        const qrcodeWithMargin = lines.map(line => margin + line).join('\n');
+        console.log(qrcodeWithMargin);
+      });
       
       console.log(
         chalk.gray(
